@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import 'package:my_vocabs/Pages/Test.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
+import 'package:path_provider/path_provider.dart';
 
 class Test_Configuration_Form extends StatefulWidget {
   const Test_Configuration_Form({super.key});
@@ -71,8 +72,8 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
                       width: MediaQuery.sizeOf(context).width * 0.67,
                       child: DropdownButtonFormField(
                         value: chosen_categ,
-                        decoration:
-                            const InputDecoration(label: Text("Vocabs Category")),
+                        decoration: const InputDecoration(
+                            label: Text("Vocabs Category")),
                         items: Categories.map((e) => DropdownMenuItem(
                               value: e,
                               child: Text(e),
@@ -99,14 +100,38 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
           )),
       const Padding(padding: EdgeInsets.all(20)),
       ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             //  questions_count = questions_count_cont.text;// cast str => int
+            print("###### ${(await getApplicationDocumentsDirectory()).path}");
 
+            //////////////////////// assign the chosen List to the 
+            ///       test list (English_vocabs & Arabic_meanings)
+            switch (chosen_categ) {
+              case "English Level 7":
+                English_Vocabs = Level_7;
+                Arabic_Meanings = Level_7_meanings;
+
+                break;
+              case "English Level 6":
+                English_Vocabs = Level_6;
+                Arabic_Meanings = Level_6_meanings;
+                break;
+              case "My Vocabs":
+                // English_Vocabs.assignAll(my_voc_cont.My_vocabs as Iterable<String>) ;
+                // Arabic_Meanings.assignAll(my_voc_cont.My_vocabs_meanings as Iterable<String>);
+                English_Vocabs = ["Should be Myvocabs list"];
+                Arabic_Meanings = ["وزاوز تابيتشاتتا"];
+                break;
+              default:
+                English_Vocabs = ["Not Found"];
+                Arabic_Meanings = ["لم يتم ايجاد البيانات"];
+            }
+
+            ///
             if (formkey.currentState!.validate()) {
               //chosen_categ = Categories[0];
 
               // this souldnt be called everytime
-              Shuffle_Vocabs_Lists();
               Get.to(Test_Page(
                   test_category: chosen_categ,
                   questions_count:
@@ -116,38 +141,5 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
           },
           child: const Text("Confirm"))
     ]);
-  }
-
-  void Shuffle_Vocabs_Lists() {
-    print("""BEFORE $English_Vocabs
-    $Arabic_Meanings\n""");
-//*********************************************** */
-
-    int rand = 0;
-    List shuffledIndex = [];
-    String temp = "";
-    //
-    print(shuffledIndex.contains(10));
-    for (int i = 0; i < English_Vocabs.length; i++) {
-      rand = Random().nextInt(English_Vocabs.length);
-/*
-      while (i == rand || shuffled_index.contains(rand)) {
-        rand = Random().nextInt(English_Vocabs.length);
-      }*/
-      // swap English elements
-      temp = English_Vocabs[i];
-      English_Vocabs[i] = English_Vocabs[rand];
-      English_Vocabs[rand] = temp;
-      // swap Arabic elements
-      temp = Arabic_Meanings[i];
-      Arabic_Meanings[i] = Arabic_Meanings[rand];
-      Arabic_Meanings[rand] = temp;
-      // its more random without this line so i removed it
-      // shuffled_index.add(rand);
-    }
-
-//*********************************************** */
-    print("""AFTER $English_Vocabs
-   $Arabic_Meanings""");
   }
 }

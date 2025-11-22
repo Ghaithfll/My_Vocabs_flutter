@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_common/get_reset.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
+import 'package:my_vocabs/main.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 
 class Add_Vocabs_page extends StatelessWidget {
@@ -172,6 +173,15 @@ but you can do in the arabic meaning
       Arabic_Meanings.add(Ar); //
       myvocab_cont.My_vocabs.add(Eng);
       myvocab_cont.My_vocabs_meanings.add(Ar);
+      //*************** */
+      //*************** */
+      // store the 2 lists
+      /*  my_box!.put("My_vocab_list", myvocab_cont.My_vocabs);
+
+      my_box!.put("My_vocab_meanings_list", myvocab_cont.My_vocabs_meanings);
+     */
+      myvocab_cont.Save_my_vocabs_lists();
+      print("================= Saved Successfully");
     }
   }
 }

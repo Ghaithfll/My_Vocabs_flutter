@@ -19,6 +19,14 @@ class _All_VocabsState extends State<All_Vocabs> {
   List vocabs = [];
   List meanings = [];
   final my_voc_cont = Get.put(Marks_controller());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    my_voc_cont.Read_my_vocabs_lists();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     int x = 0;

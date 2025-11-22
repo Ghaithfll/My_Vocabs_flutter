@@ -16,6 +16,13 @@ class _DashboardState extends State<Dashboard> {
   final marks_cont = Get.put(Marks_controller());
 
   @override
+  void initState() {
+    // TODO: implement initState
+    marks_cont.Read_test_marks();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Obx(
       () => marks_cont.marks.isEmpty

@@ -15,19 +15,20 @@ class _VocabState extends State<Vocab> {
         padding: const EdgeInsets.all(8),
         child: SizedBox(
           //  color: Colors.amber,
-          width: MediaQuery.sizeOf(context).width * 0.7,
+          width: MediaQuery.sizeOf(context).width * 0.8,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               SizedBox(
-                  width: MediaQuery.sizeOf(context).width * 0.25,
+                  width: MediaQuery.sizeOf(context).width * 0.3,
                   child: Text(
                     widget.word,
                     style: const TextStyle(fontSize: 15),
                   )),
               SizedBox(
-                  width: MediaQuery.sizeOf(context).width * 0.25,
-                  child: Text(widget.meaning, style: const TextStyle(fontSize: 15))),
+                  width: MediaQuery.sizeOf(context).width * 0.3,
+                  child: Text(widget.meaning,
+                      style: const TextStyle(fontSize: 15))),
             ],
           ),
         ));

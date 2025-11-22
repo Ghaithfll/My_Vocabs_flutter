@@ -7,7 +7,7 @@ import 'package:my_vocabs/Pages/Dashboard.dart';
 import 'package:my_vocabs/Pages/Test.dart';
 import 'package:my_vocabs/Pages/Test_configuration.dart';
 import 'package:my_vocabs/controllers/BNB_cont.dart';
-
+import 'package:my_vocabs/controllers/marks_cont.dart';
 
 class HomePageTest extends StatefulWidget {
   const HomePageTest({super.key});
@@ -32,8 +32,8 @@ class _HomePageTestState extends State<HomePageTest> {
     const Dashboard()
   ];
   final Bnb_cont = Get.put(BnbCont());
-  int test_starting_index = 0;
-  
+  var my_voc_cont = Get.put(Marks_controller());
+
   @override
   Widget build(BuildContext context) {
     var bottomBarItems = [

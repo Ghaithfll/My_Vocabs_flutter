@@ -9,6 +9,7 @@ import 'package:my_vocabs/Pages/All_Vocabs.dart';
 import 'package:my_vocabs/Pages/Test_configuration.dart';
 import 'package:my_vocabs/controllers/BNB_cont.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
+import 'package:my_vocabs/main.dart';
 import 'package:my_vocabs/models/tst_mark_modL.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -34,7 +35,8 @@ class _Test_PageState extends State<Test_Page> {
   String answerState = "";
   List<String> wrongAnswerMessage = [
     "You were close, But the answer is ",
-    "Incorrect answer, it means "
+    "Incorrect answer, it means ",
+    "Mistakes are part of the way, it is "
   ];
   List<String> CorrectgAnswerMessage = [
     "Great Job!",
@@ -43,10 +45,38 @@ class _Test_PageState extends State<Test_Page> {
     "Impressive, You are a Goat (not literally))"
   ];
 
+  final my_voc_cont = Get.put(Marks_controller());
   int correct_answers = 0;
+
+  // to differentiate between lists
+  // according to the categ
+  void Save_categ_starting_index(String category) {
+    my_box!.put("Starting_index_of_categ_$category", test_starting_index);
+    print("#####Index Saves successfully  $test_starting_index");
+  }
+
+  void Read_categ_starting_index(String category) {
+    test_starting_index = my_box!.get("Starting_index_of_categ_$category") ?? 0;
+    print("#####Index Read successfully  $test_starting_index");
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    Read_categ_starting_index(widget.test_category);
+    print("${test_starting_index + current_question - 1}");
+    //************** */
+    if (test_starting_index + widget.questions_count >= English_Vocabs.length) {
+      test_starting_index =
+          (English_Vocabs.length - 1) - (widget.questions_count - 1);
+      // shuffle method is invoked inside the finish button
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    //********************************** */
     return Center(
       child: Material(
         child: Container(
@@ -82,7 +112,7 @@ class _Test_PageState extends State<Test_Page> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "${English_Vocabs[current_question - 1]} :",
+                        "${English_Vocabs[test_starting_index + current_question - 1]} :",
                         style: const TextStyle(fontSize: 16),
                       ),
                       const Padding(padding: EdgeInsets.all(15)),
@@ -112,7 +142,8 @@ class _Test_PageState extends State<Test_Page> {
 
                           // check the answer
                           if (ans_cont.text.trim() ==
-                              Arabic_Meanings[current_question - 1]) {
+                              Arabic_Meanings[
+                                  test_starting_index + current_question - 1]) {
                             setState(() {
                               answerState = CorrectgAnswerMessage[Random()
                                   .nextInt(CorrectgAnswerMessage.length)];
@@ -122,7 +153,9 @@ class _Test_PageState extends State<Test_Page> {
                             setState(() {
                               answerState = wrongAnswerMessage[Random()
                                       .nextInt(wrongAnswerMessage.length)] +
-                                  Arabic_Meanings[current_question - 1];
+                                  Arabic_Meanings[test_starting_index +
+                                      current_question -
+                                      1];
                             });
                           }
                         });
@@ -140,11 +173,21 @@ class _Test_PageState extends State<Test_Page> {
                             (1.0 * correct_answers / widget.questions_count) *
                                 100;
                         // ****** add mark
+                        test_starting_index += widget.questions_count;
+                        if (test_starting_index >= English_Vocabs.length) {
+                          test_starting_index = 0;
+                          // shuffle now
+                          Shuffle_Vocabs_Lists();
+                        }
+                        Save_categ_starting_index(
+                          widget.test_category,
+                        );
                         var mark = Tst_Mark_Modl(
                             score: score / 100,
                             questions_cnt: widget.questions_count,
                             Category: widget.test_category);
                         mark_cont.marks.add(mark);
+                        mark_cont.Save_test_marks();
 
                         ///////////
                         await showDialog(
@@ -211,4 +254,37 @@ class _Test_PageState extends State<Test_Page> {
       ),
     );
   }
+}
+
+void Shuffle_Vocabs_Lists() {
+  print("""BEFORE $English_Vocabs
+    $Arabic_Meanings\n""");
+//*********************************************** */
+
+  int rand = 0;
+  List shuffledIndex = [];
+  String temp = "";
+  //
+  print(shuffledIndex.contains(10));
+  for (int i = 0; i < English_Vocabs.length; i++) {
+    rand = Random().nextInt(English_Vocabs.length);
+/*
+      while (i == rand || shuffled_index.contains(rand)) {
+        rand = Random().nextInt(English_Vocabs.length);
+      }*/
+    // swap English elements
+    temp = English_Vocabs[i];
+    English_Vocabs[i] = English_Vocabs[rand];
+    English_Vocabs[rand] = temp;
+    // swap Arabic elements
+    temp = Arabic_Meanings[i];
+    Arabic_Meanings[i] = Arabic_Meanings[rand];
+    Arabic_Meanings[rand] = temp;
+    // its more random without this line so i removed it
+    // shuffled_index.add(rand);
+  }
+
+//*********************************************** */
+  print("""AFTER $English_Vocabs
+   $Arabic_Meanings""");
 }

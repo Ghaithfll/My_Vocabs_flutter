@@ -11,15 +11,16 @@ Future<Box> OpenHiveBox(String box_name) async {
   // initializes hive and opens the box
   if (Hive.isBoxOpen(box_name) == false) {
     // if the box is not opened (not existed)
-    Hive.init((await getApplicationDocumentsDirectory()).path); // this is Y we imported path provider
+    Hive.init((await getApplicationDocumentsDirectory())
+        .path); // this is Y we imported path provider,to initialize the box in this path
   }
   return await Hive.openBox(box_name);
 }
 
 void main() async {
   // whenever u need to invoke a future method before the runApp, you need this line
-  //WidgetsFlutterBinding.ensureInitialized();
-  //my_box = await OpenHiveBox("My_vocabs_box1");
+  WidgetsFlutterBinding.ensureInitialized();
+  my_box = await OpenHiveBox("My_vocabs_box1");
   runApp(const MyApp());
 }
 
