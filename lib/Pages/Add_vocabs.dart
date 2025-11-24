@@ -169,8 +169,6 @@ but you can do in the arabic meaning
             "Error , length of Meanings and vocabs lists are not equal ************************************");
       }
 
-      English_Vocabs.add(Eng); // delete these 2 lines
-      Arabic_Meanings.add(Ar); //
       myvocab_cont.My_vocabs.add(Eng);
       myvocab_cont.My_vocabs_meanings.add(Ar);
       //*************** */
@@ -182,6 +180,7 @@ but you can do in the arabic meaning
      */
       myvocab_cont.Save_my_vocabs_lists();
       print("================= Saved Successfully");
+      print(myvocab_cont.My_vocabs);
     }
   }
 }

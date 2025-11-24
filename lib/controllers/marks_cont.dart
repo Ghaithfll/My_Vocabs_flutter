@@ -18,9 +18,10 @@ class Marks_controller extends GetxController {
   }
 
   void Save_my_vocabs_lists() {
-    my_box!.put("My_vocab_list", My_vocabs);
-
-    my_box!.put("My_vocab_meanings_list", My_vocabs_meanings);
+    
+    my_box!.put("My_vocab_list", My_vocabs.toList());
+    //  .toList  converts the rxlist to a normal List
+    my_box!.put("My_vocab_meanings_list", My_vocabs_meanings.toList());
   }
 
   void Read_test_marks() {

@@ -29,7 +29,7 @@ class _All_VocabsState extends State<All_Vocabs> {
 
   @override
   Widget build(BuildContext context) {
-    int x = 0;
+    int x = 2;
     if (x == 0) {
       vocabs = English_Vocabs;
       meanings = Arabic_Meanings;

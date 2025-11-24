@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:my_vocabs/Pages/Test.dart';
+import 'package:my_vocabs/controllers/marks_cont.dart';
+import 'package:my_vocabs/main.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -19,6 +21,7 @@ class Test_Configuration_Form extends StatefulWidget {
 class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
   final formkey = GlobalKey<FormState>();
   var chosen_categ = Categories[0];
+  final my_voc_cont = Get.put(Marks_controller());
 
   TextEditingController questions_count_cont = TextEditingController();
   @override
@@ -104,7 +107,7 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
             //  questions_count = questions_count_cont.text;// cast str => int
             print("###### ${(await getApplicationDocumentsDirectory()).path}");
 
-            //////////////////////// assign the chosen List to the 
+            //////////////////////// assign the chosen List to the
             ///       test list (English_vocabs & Arabic_meanings)
             switch (chosen_categ) {
               case "English Level 7":
@@ -117,10 +120,11 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
                 Arabic_Meanings = Level_6_meanings;
                 break;
               case "My Vocabs":
-                // English_Vocabs.assignAll(my_voc_cont.My_vocabs as Iterable<String>) ;
-                // Arabic_Meanings.assignAll(my_voc_cont.My_vocabs_meanings as Iterable<String>);
-                English_Vocabs = ["Should be Myvocabs list"];
-                Arabic_Meanings = ["وزاوز تابيتشاتتا"];
+                English_Vocabs = my_voc_cont.My_vocabs.cast<String>();
+                Arabic_Meanings = my_voc_cont.My_vocabs_meanings.cast<String>();
+                print(Arabic_Meanings);
+                //        English_Vocabs = ["atchaahhhh"];
+                //      Arabic_Meanings = ["وزاوز تابيتشاتتا"];
                 break;
               default:
                 English_Vocabs = ["Not Found"];

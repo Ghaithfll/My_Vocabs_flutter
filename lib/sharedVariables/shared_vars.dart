@@ -16,7 +16,7 @@ List<String> Arabic_Meanings = [
   "يتيم",
   "يكذب"
 ];
-
+bool Vocabs_Edit_mode = false;
 List<String> Categories = ["English Level 6", "English Level 7", "My Vocabs"];
 
 List<String> Level_7 = [];
