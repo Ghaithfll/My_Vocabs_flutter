@@ -10,6 +10,7 @@ import 'package:my_vocabs/Pages/Test_configuration.dart';
 import 'package:my_vocabs/controllers/BNB_cont.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
 import 'package:my_vocabs/main.dart';
+import 'package:my_vocabs/models/category_model.dart';
 import 'package:my_vocabs/models/tst_mark_modL.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -19,7 +20,7 @@ class Test_Page extends StatefulWidget {
   Test_Page(
       {super.key, required this.questions_count, required this.test_category});
   int questions_count;
-  String test_category;
+  CategoryModel test_category;
   @override
   State<Test_Page> createState() => _Test_PageState();
 }
@@ -63,7 +64,7 @@ class _Test_PageState extends State<Test_Page> {
   @override
   void initState() {
     // TODO: implement initState
-    Read_categ_starting_index(widget.test_category);
+    Read_categ_starting_index(widget.test_category.categ_name);
     print("${test_starting_index + current_question - 1}");
     //************** */
     if (test_starting_index + widget.questions_count >= English_Vocabs.length) {
@@ -180,12 +181,12 @@ class _Test_PageState extends State<Test_Page> {
                           Shuffle_Vocabs_Lists();
                         }
                         Save_categ_starting_index(
-                          widget.test_category,
+                          widget.test_category.categ_name,
                         );
                         var mark = Tst_Mark_Modl(
                             score: score / 100,
                             questions_cnt: widget.questions_count,
-                            Category: widget.test_category);
+                            Category: widget.test_category.categ_name);
                         mark_cont.marks.add(mark);
                         mark_cont.Save_test_marks();
 

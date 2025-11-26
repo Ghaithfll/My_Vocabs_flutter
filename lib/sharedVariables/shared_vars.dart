@@ -1,3 +1,8 @@
+import 'package:get/get.dart';
+import 'package:my_vocabs/controllers/BNB_cont.dart';
+import 'package:my_vocabs/main.dart';
+import 'package:my_vocabs/models/category_model.dart';
+
 List<String> English_Vocabs = [
   "Awkward",
   "Chills",
@@ -17,15 +22,54 @@ List<String> Arabic_Meanings = [
   "يكذب"
 ];
 bool Vocabs_Edit_mode = false;
-List<String> Categories = ["English Level 6", "English Level 7", "My Vocabs"];
+//List<String> Categories = ["English Level 6", "English Level 7", "My Vocabs"];
+List<CategoryModel> Categories = [
+  CategoryModel(
+      categ_name: "English Level 6",
+      arabic: ["عالق", "تقدير", "ازالة"],
+      english: ["stuck", "estimate", "eleminate"]),
+  CategoryModel(categ_name: "English Level 7", arabic: [], english: []),
+  CategoryModel(categ_name: "My Vocabs", arabic: [], english: [])
+];
+int App_Used = 0; // if 0 => new app, else the app is used
 
 List<String> Level_7 = [];
 List<String> Level_7_meanings = [];
 
 List<String> Level_6 = ["stuck", "estimate", "eleminate"];
 List<String> Level_6_meanings = ["عالق", "تقدير", "ازالة"];
-int test_starting_index = 0; // store & retrieve 
+int test_starting_index = 0; // store & retrieve
 
 /*  // these 2 lists are moved to the mark_Controller 
 List<String> My_vocabs = [];
 List<String> My_vocabs_meanings = [];*/
+
+void Save_Vocab_Lists(CategoryModel category) {
+  my_box!.put(category.categ_name, category.english);
+
+  my_box!.put(category.categ_name + "_meanings", category.arabic);
+  print("================= Saved Successfully");
+  print(category.english);
+}
+
+Read_Vocab_Lists(CategoryModel category) {
+  category.english = (my_box!.get(category.categ_name) ?? []);
+
+  category.arabic = (my_box!.get(category.categ_name + "_meanings") ?? []);
+  print("================= Read Successfully");
+  print(category.english);
+}
+
+//************ initialize app saved lists(store them) */
+
+void Initialize_Application_First_Time() { // invoke this to store level 6 & level 7
+  App_Used = my_box!.get("App_Used") ?? 0;
+  if (App_Used == 0) {
+    for (int i = 0; i < Categories.length; i++) {
+      Save_Vocab_Lists(Categories[i]);
+    }
+    App_Used += 5;
+    my_box!.put("App_Used", App_Used);
+    print("################# Initialized #############");
+  }
+}

@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:get/get_common/get_reset.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
 import 'package:my_vocabs/main.dart';
+import 'package:my_vocabs/models/category_model.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 
 class Add_Vocabs_page extends StatelessWidget {
-  Add_Vocabs_page({super.key});
+  CategoryModel category;
+  Add_Vocabs_page({super.key, required this.category});
 
   final FormKey = GlobalKey<FormState>();
   TextEditingController eng_vocab_cont = TextEditingController();
@@ -168,19 +170,22 @@ but you can do in the arabic meaning
         print(
             "Error , length of Meanings and vocabs lists are not equal ************************************");
       }
-
+/*
       myvocab_cont.My_vocabs.add(Eng);
       myvocab_cont.My_vocabs_meanings.add(Ar);
-      //*************** */
-      //*************** */
+  */
       // store the 2 lists
-      /*  my_box!.put("My_vocab_list", myvocab_cont.My_vocabs);
+      category.english.add(Eng);
+      category.arabic.add(Ar);
+      Save_Vocab_Lists(category);
+      print(category.english);
+      /*    my_box!.put(category.categ_name, category.english);
 
-      my_box!.put("My_vocab_meanings_list", myvocab_cont.My_vocabs_meanings);
-     */
-      myvocab_cont.Save_my_vocabs_lists();
+      my_box!.put(category.categ_name + "_meanings", category.arabic);
+*/
+      // myvocab_cont.Save_my_vocabs_lists();
       print("================= Saved Successfully");
-      print(myvocab_cont.My_vocabs);
+      //print(myvocab_cont.My_vocabs);
     }
   }
 }

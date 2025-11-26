@@ -79,7 +79,7 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
                             label: Text("Vocabs Category")),
                         items: Categories.map((e) => DropdownMenuItem(
                               value: e,
-                              child: Text(e),
+                              child: Text(e.categ_name),
                             )).toList(),
                         onChanged: (value) {
                           setState(() {
@@ -109,7 +109,7 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
 
             //////////////////////// assign the chosen List to the
             ///       test list (English_vocabs & Arabic_meanings)
-            switch (chosen_categ) {
+            switch (chosen_categ.categ_name) {
               case "English Level 7":
                 English_Vocabs = Level_7;
                 Arabic_Meanings = Level_7_meanings;
@@ -130,6 +130,9 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
                 English_Vocabs = ["Not Found"];
                 Arabic_Meanings = ["لم يتم ايجاد البيانات"];
             }
+
+            English_Vocabs = chosen_categ.english;
+            Arabic_Meanings = chosen_categ.arabic;
 
             ///
             if (formkey.currentState!.validate()) {

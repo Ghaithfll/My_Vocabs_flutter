@@ -24,7 +24,10 @@ class _Categories_PageState extends State<Categories_Page> {
                     padding: const EdgeInsets.all(5),
                     child: InkWell(
                         onTap: () {
-                          Get.to(() => All_Vocabs(category: Categories[index],cat_index: index,));
+                          Get.to(() => All_Vocabs(
+                                category: Categories[index],
+                                cat_index: index,
+                              ));
                         },
                         child: Container(
                           height: 100,
@@ -33,14 +36,14 @@ class _Categories_PageState extends State<Categories_Page> {
                               borderRadius: BorderRadius.circular(20)),
                           child: Center(
                             child: Text(
-                              Categories[index],
-                              style:
-                                  const TextStyle(color: Colors.white, fontSize: 20),
+                              Categories[index].categ_name,
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 20),
                             ),
                           ),
                         )));
               },
-              itemCount: 3,
+              itemCount: Categories.length,
             )),
           ],
         ));

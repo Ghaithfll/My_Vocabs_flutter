@@ -4,11 +4,12 @@ import 'package:get/get.dart';
 import 'package:my_vocabs/Custom_widgets/Vocab.dart';
 import 'package:my_vocabs/Pages/Add_vocabs.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
+import 'package:my_vocabs/models/category_model.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 
 class All_Vocabs extends StatefulWidget {
   All_Vocabs({super.key, required this.cat_index, required this.category});
-  String category;
+  CategoryModel category;
   int cat_index;
 
   @override
@@ -23,75 +24,45 @@ class _All_VocabsState extends State<All_Vocabs> {
   @override
   void initState() {
     // TODO: implement initState
-    my_voc_cont.Read_my_vocabs_lists();
+    //my_voc_cont.Read_my_vocabs_lists();
+    Read_Vocab_Lists(widget.category);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    int x = 2;
-    if (x == 0) {
-      vocabs = English_Vocabs;
-      meanings = Arabic_Meanings;
-    } else {
-      switch (widget.cat_index) {
-        case 0:
-          vocabs = Level_7;
-          meanings = Level_7_meanings;
+    vocabs = widget.category.english;
 
-          break;
-        case 1:
-          vocabs = Level_6;
-          meanings = Level_6_meanings;
-          break;
-        case 2:
-          vocabs = my_voc_cont.My_vocabs;
-          meanings = my_voc_cont.My_vocabs_meanings;
-          break;
-        default:
-          vocabs = ["Not Found"];
-          meanings = ["لم يتم ايجاد البيانات"];
-      }
-    }
+    meanings = widget.category.arabic;
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            widget.category,
+            widget.category.categ_name,
             style: const TextStyle(),
           ),
           backgroundColor: Colors.blueGrey,
           centerTitle: true,
         ),
         body: Center(
-            child: vocabs.isEmpty && my_voc_cont.My_vocabs.isEmpty
-                ? const Text(
-                    "Still empty",
-                    style: TextStyle(fontSize: 15),
-                  )
-                : widget.category != "My Vocabs"
-                    ? ListView.builder(
-                        itemCount: vocabs.length,
-                        itemBuilder: (context, index) => Vocab(
-                            meaning: meanings[index], word: vocabs[index]),
-                      )
-                    : Obx(
-                        () => ListView.builder(
-                          itemCount: my_voc_cont.My_vocabs.length,
-                          itemBuilder: (context, index) => Vocab(
-                              meaning: my_voc_cont.My_vocabs_meanings[index],
-                              word: my_voc_cont.My_vocabs[index]),
-                        ),
-                      )),
-        floatingActionButton: widget.category == "My Vocabs"
-            ? FloatingActionButton(
-                onPressed: () {
-                  Get.to(() => Add_Vocabs_page());
-                },
-                child: const Text(
-                  "Add Vocabs",
-                  style: TextStyle(fontSize: 12),
+          child: widget.category.english.isEmpty
+              ? const Text(
+                  "Still empty",
+                  style: TextStyle(fontSize: 15),
+                )
+              : ListView.builder(
+                  itemCount: vocabs.length,
+                  itemBuilder: (context, index) =>
+                      Vocab(meaning: meanings[index], word: vocabs[index]),
                 ),
-              )
-            : Container());
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Get.to(() => Add_Vocabs_page(category: widget.category));
+          },
+          child: const Text(
+            "Add Vocabs",
+            style: TextStyle(fontSize: 12),
+          ),
+        ));
   }
 }
