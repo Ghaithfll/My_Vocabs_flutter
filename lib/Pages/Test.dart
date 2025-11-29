@@ -186,9 +186,9 @@ class _Test_PageState extends State<Test_Page> {
                         var mark = Tst_Mark_Modl(
                             score: score / 100,
                             questions_cnt: widget.questions_count,
-                            Category: widget.test_category.categ_name);
+                            Category_name: widget.test_category.categ_name);
                         mark_cont.marks.add(mark);
-                        mark_cont.Save_test_marks();
+                        // save mark
 
                         ///////////
                         await showDialog(

@@ -8,6 +8,8 @@ import 'package:my_vocabs/Pages/Test.dart';
 import 'package:my_vocabs/Pages/Test_configuration.dart';
 import 'package:my_vocabs/controllers/BNB_cont.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
+import 'package:my_vocabs/models/category_model.dart';
+import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 
 class HomePageTest extends StatefulWidget {
   const HomePageTest({super.key});
@@ -50,12 +52,94 @@ class _HomePageTestState extends State<HomePageTest> {
       appBar: AppBar(
         backgroundColor: Colors.orange,
         title: Text(
-          app_bar_title[Bnb_cont.BNB_index],
+          app_bar_title[BNB_index],
           style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
-      body: Body[Bnb_cont.BNB_index],
+      body: Body[BNB_index],
+      floatingActionButton: BNB_index == 1
+          ? FloatingActionButton(
+              child: Icon(Icons.add_box_outlined),
+              onPressed: () async {
+                TextEditingController categ_name_cont = TextEditingController();
+                bool valid_name = false;
+                await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(
+                      "Enter The Name Of The New Category",
+                      overflow: TextOverflow.fade,
+                    ),
+                    content: TextField(
+                      controller: categ_name_cont,
+                      maxLength: 20,
+                      onChanged: (value) {
+                        for (var categ in Categories) {
+                          if (categ.categ_name == value.trim()) {
+                            valid_name = false;
+                          } else if (value.isNotEmpty) {
+                            valid_name = true;
+                          }
+                        }
+                      },
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          if (valid_name) {
+                            Categories.add(CategoryModel(
+                                categ_name: categ_name_cont.text,
+                                arabic: [],
+                                english: []));
+                          } else {
+                            String message = "Invalid Value";
+                            if (categ_name_cont.text.isNotEmpty) {
+                              message = "Already Existed";
+                            }
+                            await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                content: Text(message),
+                                title: Text(
+                                  "Error",
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        "OK",
+                                        style: TextStyle(color: Colors.blue),
+                                      ))
+                                ],
+                              ),
+                            );
+                          }
+                          // now save categ_List
+
+                          setState(() {});
+                        },
+                        child:
+                            Text("Add", style: TextStyle(color: Colors.blue)),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              })
+          : Container(),
       bottomNavigationBar: //Obx(() =>
           BottomNavigationBar(
         backgroundColor: Colors.orange,
@@ -65,10 +149,10 @@ class _HomePageTestState extends State<HomePageTest> {
         type: BottomNavigationBarType.shifting,
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         iconSize: 27,
-        currentIndex: Bnb_cont.BNB_index, //BNB_index,
+        currentIndex: BNB_index, //BNB_index,
         onTap: (value) {
           setState(() {
-            Bnb_cont.BNB_index = value; //BNB_index = value;
+            BNB_index = value; //BNB_index = value;
           });
         },
         items: bottomBarItems,

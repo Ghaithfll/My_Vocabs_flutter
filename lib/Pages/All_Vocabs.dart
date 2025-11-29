@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:my_vocabs/Custom_widgets/Vocab.dart';
 import 'package:my_vocabs/Pages/Add_vocabs.dart';
+import 'package:my_vocabs/controllers/all_voc_cont.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
 import 'package:my_vocabs/models/category_model.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
@@ -19,13 +20,15 @@ class All_Vocabs extends StatefulWidget {
 class _All_VocabsState extends State<All_Vocabs> {
   List vocabs = [];
   List meanings = [];
-  final my_voc_cont = Get.put(Marks_controller());
+  final all_voc_cont = Get.put(All_Voc_Controller());
 
   @override
   void initState() {
     // TODO: implement initState
     //my_voc_cont.Read_my_vocabs_lists();
     Read_Vocab_Lists(widget.category);
+    all_voc_cont.Initialize_cont(
+        Eng: widget.category.english, Ar: widget.category.arabic);
     super.initState();
   }
 
@@ -43,18 +46,20 @@ class _All_VocabsState extends State<All_Vocabs> {
           backgroundColor: Colors.blueGrey,
           centerTitle: true,
         ),
-        body: Center(
-          child: widget.category.english.isEmpty
-              ? const Text(
-                  "Still empty",
-                  style: TextStyle(fontSize: 15),
-                )
-              : ListView.builder(
-                  itemCount: vocabs.length,
-                  itemBuilder: (context, index) =>
-                      Vocab(meaning: meanings[index], word: vocabs[index]),
-                ),
-        ),
+        body: Obx(() => Center(
+              child: all_voc_cont.Vocabs
+                      .isEmpty //since the obx content depends on this line, then this line should be reactive(Rx type to reflect the changes immediately)
+                  ? const Text(
+                      "Still empty",
+                      style: TextStyle(fontSize: 15),
+                    )
+                  : ListView.builder(
+                      itemCount: all_voc_cont.Vocabs.length,
+                      itemBuilder: (context, index) => Vocab(
+                          meaning: all_voc_cont.Meanings[index],
+                          word: all_voc_cont.Vocabs[index]),
+                    ),
+            )),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Get.to(() => Add_Vocabs_page(category: widget.category));

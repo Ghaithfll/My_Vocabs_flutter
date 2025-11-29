@@ -3,6 +3,8 @@ import 'package:hive/hive.dart';
 
 import 'package:my_vocabs/Pages/home.dart';
 import 'package:get/get.dart';
+import 'package:my_vocabs/models/category_model.dart';
+import 'package:my_vocabs/models/tst_mark_modL.dart';
 import 'package:path_provider/path_provider.dart';
 //import 'package:path_provider/path_provider.dart';
 
@@ -20,6 +22,11 @@ Future<Box> OpenHiveBox(String box_name) async {
 void main() async {
   // whenever u need to invoke a future method before the runApp, you need this line
   WidgetsFlutterBinding.ensureInitialized();
+
+  Hive.registerAdapter(
+      Category_Type_Adapter()); // to inform hive that we made a hive adapter
+  Hive.registerAdapter(
+      Test_Mark_Type_Adapter()); // lines registering the adapters should precede the openBox
   my_box = await OpenHiveBox("My_vocabs_box1");
   runApp(const MyApp());
 }

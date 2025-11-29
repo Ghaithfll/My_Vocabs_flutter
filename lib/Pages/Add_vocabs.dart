@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_common/get_reset.dart';
+import 'package:my_vocabs/controllers/all_voc_cont.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
 import 'package:my_vocabs/main.dart';
 import 'package:my_vocabs/models/category_model.dart';
@@ -165,6 +166,7 @@ but you can do in the arabic meaning
   }
 
   void SaveVocab(String Eng, String Ar) {
+    final cont = Get.put(All_Voc_Controller());
     if (Eng.length > 1 && Ar.length > 1) {
       if (English_Vocabs.length != Arabic_Meanings.length) {
         print(
@@ -178,7 +180,8 @@ but you can do in the arabic meaning
       category.english.add(Eng);
       category.arabic.add(Ar);
       Save_Vocab_Lists(category);
-      print(category.english);
+      cont.add_voc(ar: Ar, eng: Eng);
+      print("${category.english}  /// ${cont.Vocabs}");
       /*    my_box!.put(category.categ_name, category.english);
 
       my_box!.put(category.categ_name + "_meanings", category.arabic);

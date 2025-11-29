@@ -109,28 +109,8 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
 
             //////////////////////// assign the chosen List to the
             ///       test list (English_vocabs & Arabic_meanings)
-            switch (chosen_categ.categ_name) {
-              case "English Level 7":
-                English_Vocabs = Level_7;
-                Arabic_Meanings = Level_7_meanings;
-
-                break;
-              case "English Level 6":
-                English_Vocabs = Level_6;
-                Arabic_Meanings = Level_6_meanings;
-                break;
-              case "My Vocabs":
-                English_Vocabs = my_voc_cont.My_vocabs.cast<String>();
-                Arabic_Meanings = my_voc_cont.My_vocabs_meanings.cast<String>();
-                print(Arabic_Meanings);
-                //        English_Vocabs = ["atchaahhhh"];
-                //      Arabic_Meanings = ["وزاوز تابيتشاتتا"];
-                break;
-              default:
-                English_Vocabs = ["Not Found"];
-                Arabic_Meanings = ["لم يتم ايجاد البيانات"];
-            }
-
+  
+  
             English_Vocabs = chosen_categ.english;
             Arabic_Meanings = chosen_categ.arabic;
 

@@ -18,7 +18,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     // TODO: implement initState
-    marks_cont.Read_test_marks();
+    // read marks
     super.initState();
   }
 

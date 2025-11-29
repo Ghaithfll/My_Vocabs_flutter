@@ -12,6 +12,14 @@ class Categories_Page extends StatefulWidget {
 
 class _Categories_PageState extends State<Categories_Page> {
   @override
+  void initState() {
+    // TODO: implement initState
+     Read_Categories_List();
+    
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(8),

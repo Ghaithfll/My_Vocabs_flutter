@@ -4,9 +4,9 @@ import 'package:my_vocabs/main.dart';
 class Marks_controller extends GetxController {
   RxList marks = [].obs;
 
-  RxList My_vocabs = [].obs;
-  RxList My_vocabs_meanings = [].obs;
-
+//  RxList My_vocabs = [].obs;
+//  RxList My_vocabs_meanings = [].obs;
+/*
   void Read_my_vocabs_lists() {
     /* if u typed my_vocabs = box.get("my_vocabs_list")
     this wwill arise a type error cuz box.get returns List<dynamic>
@@ -29,5 +29,5 @@ class Marks_controller extends GetxController {
   }
   void Save_test_marks() {
     //  my_box!.put("test_marks", marks);
-  }
+  }*/
 }
