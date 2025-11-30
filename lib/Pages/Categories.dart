@@ -18,7 +18,7 @@ class _Categories_PageState extends State<Categories_Page> {
   void initState() {
     // TODO: implement initState
     Read_Categories_List();
-    categs_cont.Initialeze_Categories_Cont(Categories);
+    categs_cont.Initialize_Categories_Cont(Categories);
     super.initState();
   }
 
@@ -37,8 +37,6 @@ class _Categories_PageState extends State<Categories_Page> {
               return true;
             },
             child: Column(
-              
-              
               children: [
                 Expanded(
                   child: Obx(() => ListView.builder(

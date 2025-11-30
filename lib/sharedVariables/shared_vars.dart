@@ -95,11 +95,12 @@ void Save_Categories_List() {
 final categ_cont = Get.put(Categories_Cont());
 void Delete_Category(CategoryModel categ) {
   if (categ.categ_name != "My Vocabs") {
-    my_box!.delete(categ.categ_name);
+      my_box!.delete(categ.categ_name);
     my_box!.delete(
         categ.categ_name + "_meanings"); // delete the lists of the categ
-    Categories.remove(categ);
-   // categ_cont.Categories_List.remove(categ);
+   
+     Categories.remove(categ);
+    categ_cont.Categories_List.remove(categ);
   }
   Save_Categories_List();
 }

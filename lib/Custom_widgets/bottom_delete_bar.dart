@@ -14,14 +14,18 @@ class Bottom_Delete_Bar extends StatelessWidget {
       children: [
         IconButton(
             onPressed: () {
+              List<CategoryModel> To_Delete = [];
               for (var categ in categs_cont.Categories_List) {
                 if (categ.selected && categ.categ_name != "My Vocabs") {
-                  Delete_Category(
-                      categ); // this method removes the categ from both 'Categories' List and the RxList of the ctegs_controller
-               
+                  To_Delete.add(categ);
                 }
+                //categs_cont.Initialize_Categories_Cont(Categories);
               }
-              // categs_cont.Categories_List.removeAt(0);
+              for (var categ in To_Delete) {
+                Delete_Category(categ);
+              
+              }
+
               categs_cont.Disable_Select_Mode();
             },
             icon: Icon(

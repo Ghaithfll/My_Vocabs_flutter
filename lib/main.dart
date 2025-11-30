@@ -5,6 +5,7 @@ import 'package:my_vocabs/Pages/home.dart';
 import 'package:get/get.dart';
 import 'package:my_vocabs/models/category_model.dart';
 import 'package:my_vocabs/models/tst_mark_modL.dart';
+import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 import 'package:path_provider/path_provider.dart';
 //import 'package:path_provider/path_provider.dart';
 
@@ -28,6 +29,7 @@ void main() async {
   Hive.registerAdapter(
       Test_Mark_Type_Adapter()); // lines registering the adapters should precede the openBox
   my_box = await OpenHiveBox("My_vocabs_box1");
+  Initialize_Application_First_Time();
   runApp(const MyApp());
 }
 
