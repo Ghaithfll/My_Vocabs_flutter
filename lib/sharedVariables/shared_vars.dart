@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:my_vocabs/controllers/BNB_cont.dart';
+import 'package:my_vocabs/controllers/Categs_cont.dart';
 import 'package:my_vocabs/main.dart';
 import 'package:my_vocabs/models/category_model.dart';
 
@@ -28,7 +28,9 @@ List<CategoryModel> Categories = [
       categ_name: "English Level 6",
       arabic: ["عالق", "تقدير", "ازالة"],
       english: ["stuck", "estimate", "eleminate"]),
-  CategoryModel(categ_name: "English Level 7", arabic: [], english: []),
+  CategoryModel(categ_name: "English Level 7", arabic: ["يجادل"], english: ["argue"]),
+  CategoryModel(categ_name: "English Level 8", arabic: [], english: []),
+ 
   CategoryModel(categ_name: "My Vocabs", arabic: [], english: [])
 ];
 int App_Used = 0; // if 0 => new app, else the app is used

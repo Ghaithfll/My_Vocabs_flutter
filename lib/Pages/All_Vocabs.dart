@@ -9,9 +9,9 @@ import 'package:my_vocabs/models/category_model.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 
 class All_Vocabs extends StatefulWidget {
-  All_Vocabs({super.key, required this.cat_index, required this.category});
+  All_Vocabs({super.key,  required this.category});
   CategoryModel category;
-  int cat_index;
+
 
   @override
   State<All_Vocabs> createState() => _All_VocabsState();

@@ -6,7 +6,7 @@ import 'package:my_vocabs/Pages/Categories.dart';
 import 'package:my_vocabs/Pages/Dashboard.dart';
 import 'package:my_vocabs/Pages/Test.dart';
 import 'package:my_vocabs/Pages/Test_configuration.dart';
-import 'package:my_vocabs/controllers/BNB_cont.dart';
+import 'package:my_vocabs/controllers/Categs_cont.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
 import 'package:my_vocabs/models/category_model.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
@@ -22,6 +22,7 @@ class _HomePageTestState extends State<HomePageTest> {
   // int BNB_index = 0;
   TextEditingController ans_cont = TextEditingController();
   bool checked = false;
+  final categs_cont = Get.put(Categories_Cont());
   int BNB_index = 0;
   List<String> app_bar_title = [
     "Vocabulary Test",
@@ -33,7 +34,7 @@ class _HomePageTestState extends State<HomePageTest> {
     const Categories_Page(),
     const Dashboard()
   ];
-  final Bnb_cont = Get.put(BnbCont());
+
   var my_voc_cont = Get.put(Marks_controller());
 
   @override
@@ -89,10 +90,13 @@ class _HomePageTestState extends State<HomePageTest> {
                         onPressed: () async {
                           Navigator.pop(context);
                           if (valid_name) {
-                            Categories.add(CategoryModel(
+                            CategoryModel new_categ = CategoryModel(
                                 categ_name: categ_name_cont.text,
                                 arabic: [],
-                                english: []));
+                                english: []);
+                            categs_cont.Add_Category(new_categ);
+                            Categories.add(new_categ);
+                            Save_Categories_List();
                           } else {
                             String message = "Invalid Value";
                             if (categ_name_cont.text.isNotEmpty) {

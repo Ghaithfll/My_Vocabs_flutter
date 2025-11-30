@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_vocabs/Custom_widgets/Category_ui.dart';
 import 'package:my_vocabs/Pages/All_Vocabs.dart';
+import 'package:my_vocabs/controllers/Categs_cont.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 
 class Categories_Page extends StatefulWidget {
@@ -11,11 +13,12 @@ class Categories_Page extends StatefulWidget {
 }
 
 class _Categories_PageState extends State<Categories_Page> {
+  final categs_cont = Get.put(Categories_Cont());
   @override
   void initState() {
     // TODO: implement initState
-     Read_Categories_List();
-    
+    Read_Categories_List();
+    categs_cont.Initialeze_Categories_Cont(Categories);
     super.initState();
   }
 
@@ -26,33 +29,16 @@ class _Categories_PageState extends State<Categories_Page> {
         child: Column(
           children: [
             Expanded(
-                child: ListView.builder(
-              itemBuilder: (context, index) {
-                return Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: InkWell(
-                        onTap: () {
-                          Get.to(() => All_Vocabs(
-                                category: Categories[index],
-                                cat_index: index,
-                              ));
-                        },
-                        child: Container(
-                          height: 100,
-                          decoration: BoxDecoration(
-                              color: Colors.purple,
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Center(
-                            child: Text(
-                              Categories[index].categ_name,
-                              style: const TextStyle(
-                                  color: Colors.white, fontSize: 20),
-                            ),
-                          ),
-                        )));
-              },
-              itemCount: Categories.length,
-            )),
+              child: Obx(() => ListView.builder(
+                    itemBuilder: (context, index) {
+                      return Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Category_Ui(
+                              categ: categs_cont.Categories_List[index]));
+                    },
+                    itemCount: categs_cont.Categories_List.length,
+                  )),
+            )
           ],
         ));
   }

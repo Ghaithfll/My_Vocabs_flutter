@@ -7,7 +7,7 @@ import 'package:my_vocabs/Custom_widgets/mark.dart';
 import 'package:my_vocabs/Pages/Add_vocabs.dart';
 import 'package:my_vocabs/Pages/All_Vocabs.dart';
 import 'package:my_vocabs/Pages/Test_configuration.dart';
-import 'package:my_vocabs/controllers/BNB_cont.dart';
+import 'package:my_vocabs/controllers/Categs_cont.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
 import 'package:my_vocabs/main.dart';
 import 'package:my_vocabs/models/category_model.dart';
@@ -30,7 +30,7 @@ class _Test_PageState extends State<Test_Page> {
   TextEditingController ans_cont = TextEditingController();
   bool Question_checked =
       false; // to check ur answer before going to the next question
-  final controller = Get.put(BnbCont());
+  
   //*  Form related vars
   int current_question = 1;
   String answerState = "";
