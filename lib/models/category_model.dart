@@ -5,7 +5,8 @@ class CategoryModel {
   String categ_name;
   List<String> english = [];
   List<String> arabic = [];
-
+  bool selected = false;
+  
   CategoryModel(
       {required this.categ_name, required this.arabic, required this.english});
 }
@@ -33,7 +34,7 @@ class Category_Type_Adapter extends TypeAdapter<CategoryModel> {
     writer.writeString(obj.categ_name);
     writer.writeStringList(obj.arabic);
 
-    writer.writeStringList(obj.english); // u write a list<String> , and read a List<String> (in the read method)
+    writer.writeStringList(obj
+        .english); // u write a list<String> , and read a List<String> (in the read method)
   }
 }
-

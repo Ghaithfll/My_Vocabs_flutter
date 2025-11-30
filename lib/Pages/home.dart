@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_vocabs/Custom_widgets/bottom_delete_bar.dart';
 import 'package:my_vocabs/Pages/Add_vocabs.dart';
 import 'package:my_vocabs/Pages/All_Vocabs.dart';
 import 'package:my_vocabs/Pages/Categories.dart';
@@ -49,7 +50,7 @@ class _HomePageTestState extends State<HomePageTest> {
               .data_thresholding_outlined), //Icon(Icons.workspace_premium_outlined), // score icon
           label: "Dashboard"),
     ];
-    return Scaffold(
+    return Obx(() =>  Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
         title: Text(
@@ -145,24 +146,27 @@ class _HomePageTestState extends State<HomePageTest> {
               })
           : Container(),
       bottomNavigationBar: //Obx(() =>
-          BottomNavigationBar(
-        backgroundColor: Colors.orange,
-        showUnselectedLabels: false,
-        selectedItemColor: Colors.purple[400],
-        unselectedItemColor: const Color.fromARGB(255, 197, 165, 175),
-        type: BottomNavigationBarType.shifting,
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        iconSize: 27,
-        currentIndex: BNB_index, //BNB_index,
-        onTap: (value) {
-          setState(() {
-            BNB_index = value; //BNB_index = value;
-          });
-        },
-        items: bottomBarItems,
-      )
+          categs_cont.Categs_Select_Mode.value
+              ? Bottom_Delete_Bar()
+              : BottomNavigationBar(
+                  backgroundColor: Colors.orange,
+                  showUnselectedLabels: false,
+                  selectedItemColor: Colors.purple[400],
+                  unselectedItemColor: const Color.fromARGB(255, 197, 165, 175),
+                  type: BottomNavigationBarType.shifting,
+                  selectedLabelStyle:
+                      const TextStyle(fontWeight: FontWeight.bold),
+                  iconSize: 27,
+                  currentIndex: BNB_index, //BNB_index,
+                  onTap: (value) {
+                    setState(() {
+                      BNB_index = value; //BNB_index = value;
+                    });
+                  },
+                  items: bottomBarItems,
+                )
       //)
       ,
-    );
+    ));
   }
 }

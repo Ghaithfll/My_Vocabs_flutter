@@ -26,20 +26,32 @@ class _Categories_PageState extends State<Categories_Page> {
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(8),
-        child: Column(
-          children: [
-            Expanded(
-              child: Obx(() => ListView.builder(
-                    itemBuilder: (context, index) {
-                      return Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: Category_Ui(
-                              categ: categs_cont.Categories_List[index]));
-                    },
-                    itemCount: categs_cont.Categories_List.length,
-                  )),
-            )
-          ],
-        ));
+        child: WillPopScope(
+            onWillPop: () async {
+              if (categs_cont.Categs_Select_Mode.value == true) {
+                setState(() {
+                  categs_cont.Disable_Select_Mode();
+                });
+                return false;
+              }
+              return true;
+            },
+            child: Column(
+              
+              
+              children: [
+                Expanded(
+                  child: Obx(() => ListView.builder(
+                        itemBuilder: (context, index) {
+                          return Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Category_Ui(
+                                  categ: categs_cont.Categories_List[index]));
+                        },
+                        itemCount: categs_cont.Categories_List.length,
+                      )),
+                )
+              ],
+            )));
   }
 }

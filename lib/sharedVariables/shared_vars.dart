@@ -3,6 +3,8 @@ import 'package:my_vocabs/controllers/Categs_cont.dart';
 import 'package:my_vocabs/main.dart';
 import 'package:my_vocabs/models/category_model.dart';
 
+bool Categories_Select_Mode = false;
+
 List<String> English_Vocabs = [
   "Awkward",
   "Chills",
@@ -28,9 +30,9 @@ List<CategoryModel> Categories = [
       categ_name: "English Level 6",
       arabic: ["عالق", "تقدير", "ازالة"],
       english: ["stuck", "estimate", "eleminate"]),
-  CategoryModel(categ_name: "English Level 7", arabic: ["يجادل"], english: ["argue"]),
+  CategoryModel(
+      categ_name: "English Level 7", arabic: ["يجادل"], english: ["argue"]),
   CategoryModel(categ_name: "English Level 8", arabic: [], english: []),
- 
   CategoryModel(categ_name: "My Vocabs", arabic: [], english: [])
 ];
 int App_Used = 0; // if 0 => new app, else the app is used
@@ -74,13 +76,14 @@ void Initialize_Application_First_Time() {
     App_Used += 5;
     my_box!.put("App_Used", App_Used);
     print("################# App Initialized #############");
-    // save Categories list 
+    // save Categories list
     Save_Categories_List();
   }
 }
 
 void Read_Categories_List() {
-  Categories = (my_box!.get("Categories_List")).cast<CategoryModel>() ?? []; // casting from List<dynamic> => List<CategoryModel>
+  Categories = (my_box!.get("Categories_List")).cast<CategoryModel>() ??
+      []; // casting from List<dynamic> => List<CategoryModel>
   print("##### Categories have been read successfully ");
 }
 
@@ -89,9 +92,17 @@ void Save_Categories_List() {
   print("##### Categories have been Saved successfully ");
 }
 
-void Save_Test_Mark_List(){
-
+final categ_cont = Get.put(Categories_Cont());
+void Delete_Category(CategoryModel categ) {
+  if (categ.categ_name != "My Vocabs") {
+    my_box!.delete(categ.categ_name);
+    my_box!.delete(
+        categ.categ_name + "_meanings"); // delete the lists of the categ
+    Categories.remove(categ);
+   // categ_cont.Categories_List.remove(categ);
+  }
+  Save_Categories_List();
 }
-void Read_Test_Mark_List(){
 
-}
+void Save_Test_Mark_List() {}
+void Read_Test_Mark_List() {}
