@@ -30,7 +30,7 @@ class _Test_PageState extends State<Test_Page> {
   TextEditingController ans_cont = TextEditingController();
   bool Question_checked =
       false; // to check ur answer before going to the next question
-  
+
   //*  Form related vars
   int current_question = 1;
   String answerState = "";
@@ -48,11 +48,13 @@ class _Test_PageState extends State<Test_Page> {
 
   final my_voc_cont = Get.put(Marks_controller());
   int correct_answers = 0;
-
+  Color button_color = const Color.fromARGB(255, 58, 53, 53);
+  Color answer_state_color = Colors.black;
+  final tst_form_key = GlobalKey<FormState>();
   // to differentiate between lists
   // according to the categ
-  void Save_categ_starting_index(String category) {
-    my_box!.put("Starting_index_of_categ_$category", test_starting_index);
+  void Save_categ_starting_index(String category) async {
+    await my_box!.put("Starting_index_of_categ_$category", test_starting_index);
     print("#####Index Saves successfully  $test_starting_index");
   }
 
@@ -78,181 +80,353 @@ class _Test_PageState extends State<Test_Page> {
   @override
   Widget build(BuildContext context) {
     //********************************** */
-    return Center(
-      child: Material(
-        child: Container(
-          color: Colors.orange,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  "Write The Meaning Of The Word In Arabic :",
-                  style: TextStyle(
-                    fontSize: 20,
+    return Scaffold(
+      body: Center(
+        child: Material(
+          child: Container(
+            color: Colors.orange,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    "Write The Meaning Of The Word In Arabic :",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 17.0),
-                    child: Text(
-                      "( $current_question/${widget.questions_count} )",
-                      style: const TextStyle(fontSize: 18),
-                    ),
-                  )
-                ],
-              ),
-              const Padding(padding: EdgeInsets.all(10)),
-              Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: (Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "${English_Vocabs[test_starting_index + current_question - 1]} :",
-                        style: const TextStyle(fontSize: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 17.0),
+                      child: Text(
+                        "( $current_question/${widget.questions_count} )",
+                        style: const TextStyle(fontSize: 18),
                       ),
-                      const Padding(padding: EdgeInsets.all(15)),
-                      SizedBox(
-                          width: 160,
-                          child: TextFormField(
-                            controller: ans_cont,
-                            canRequestFocus: true,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return "The answer couldn't be empty";
-                              }
-                              return null;
-                            },
-                            //  decoration: InputDecoration(border: InputBorder.none),
-                          ))
-                    ],
-                  ))),
-              const Padding(padding: EdgeInsets.all(20)),
-              Center(
-                child: ElevatedButton(
+                    )
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.all(10)),
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: (Form(
+                      key: tst_form_key,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "${English_Vocabs[test_starting_index + current_question - 1].trim()} ",
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          const Padding(padding: EdgeInsets.all(15)),
+                          Text(
+                            " means ",
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          const Padding(padding: EdgeInsets.all(15)),
+                          SizedBox(
+                              width: 160,
+                              child: TextFormField(
+                                maxLength: 30,
+                                style: TextStyle(color: answer_state_color),
+                                controller: ans_cont,
+                                canRequestFocus: true,
+                                validator: (value) {
+                                  if (value!.trim().isEmpty) {
+                                    return "The answer couldn't be empty";
+                                  }
+                                  return null;
+                                },
+                                //  decoration: InputDecoration(border: InputBorder.none),
+                              ))
+                        ],
+                      ))),
+                ),
+                const Padding(padding: EdgeInsets.all(20)),
+                Container(
+                  child: Text(
+                    answerState,
+                    style: TextStyle(color: answer_state_color),
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.all(20)),
+                MaterialButton(
                     onPressed: () async {
-                      if (Question_checked == false &&
-                          current_question - 1 < English_Vocabs.length) {
-                        setState(() {
-                          Question_checked = true;
+                      if (tst_form_key.currentState!.validate()) {
+                        if (Question_checked == false &&
+                            current_question - 1 < English_Vocabs.length) {
+                          setState(() {
+                            Question_checked = true;
 
-                          // check the answer
-                          if (ans_cont.text.trim() ==
-                              Arabic_Meanings[
-                                  test_starting_index + current_question - 1]) {
-                            setState(() {
-                              answerState = CorrectgAnswerMessage[Random()
-                                  .nextInt(CorrectgAnswerMessage.length)];
-                              correct_answers++;
-                            });
-                          } else {
-                            setState(() {
-                              answerState = wrongAnswerMessage[Random()
-                                      .nextInt(wrongAnswerMessage.length)] +
-                                  Arabic_Meanings[test_starting_index +
-                                      current_question -
-                                      1];
-                            });
+                            // check the answer
+                            if (ans_cont.text.trim() ==
+                                Arabic_Meanings[test_starting_index +
+                                        current_question -
+                                        1]
+                                    .trim()) {
+                              setState(() {
+                                answerState = CorrectgAnswerMessage[Random()
+                                    .nextInt(CorrectgAnswerMessage.length)];
+                                answer_state_color = Colors.green;
+                                button_color = Colors.green;
+                                correct_answers++;
+                              });
+                            } else {
+                              setState(() {
+                                answerState = wrongAnswerMessage[Random()
+                                        .nextInt(wrongAnswerMessage.length)] +
+                                    Arabic_Meanings[test_starting_index +
+                                        current_question -
+                                        1];
+                                button_color = Colors.red;
+                                answer_state_color = Colors.red;
+                              });
+                            }
+                          });
+                        } else if (current_question != widget.questions_count) {
+                          setState(() {
+                            // next question
+                            Question_checked = false;
+                            current_question += 1;
+                            ans_cont.clear();
+                            answerState = "";
+
+                            answer_state_color = Colors.black;
+                            button_color =
+                                const Color.fromARGB(255, 58, 53, 53);
+                          });
+                        } else {
+                          // test finish button onpressed
+                          double score =
+                              (1.0 * correct_answers / widget.questions_count) *
+                                  100;
+                          // ****** add mark
+                          test_starting_index += widget.questions_count;
+                          if (test_starting_index >= English_Vocabs.length) {
+                            test_starting_index = 0;
+                            // shuffle now
+                            Shuffle_Vocabs_Lists();
                           }
-                        });
-                      } else if (current_question != widget.questions_count) {
-                        setState(() {
-                          // next question
-                          Question_checked = false;
-                          current_question += 1;
-                          ans_cont.clear();
-                          answerState = "";
-                        });
-                      } else {
-                        // test finish button onpressed
-                        double score =
-                            (1.0 * correct_answers / widget.questions_count) *
-                                100;
-                        // ****** add mark
-                        test_starting_index += widget.questions_count;
-                        if (test_starting_index >= English_Vocabs.length) {
-                          test_starting_index = 0;
-                          // shuffle now
-                          Shuffle_Vocabs_Lists();
-                        }
-                        Save_categ_starting_index(
-                          widget.test_category.categ_name,
-                        );
-                        var mark = Tst_Mark_Modl(
-                            score: score / 100,
-                            questions_cnt: widget.questions_count,
-                            Category_name: widget.test_category.categ_name);
-                        mark_cont.marks.add(mark);
-                        // save mark
-
-                        ///////////
-                        await showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Nice Try"),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  "You Scored",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                Center(
-                                  child: Text(
-                                    "${score.toInt()}%",
-                                    style: const TextStyle(fontSize: 20),
+                          Save_categ_starting_index(
+                            widget.test_category.categ_name,
+                          );
+                          var mark = Tst_Mark_Modl(
+                              score: score / 100,
+                              questions_cnt: widget.questions_count,
+                              Category_name: widget.test_category.categ_name);
+                          mark_cont.Add_test_mark_to_Controller(mark);
+                          // save mark
+                          Marks.add(mark);
+                          Save_Test_Mark_List();
+                          ///////////
+                          await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text("Nice Try"),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Text(
+                                    "You Scored",
+                                    style: TextStyle(fontSize: 20),
                                   ),
-                                ),
-                                const Padding(padding: EdgeInsets.all(5)),
-                                /* LinearPercentIndicator(
+                                  Center(
+                                    child: Text(
+                                      "${score.toInt()}%",
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
+                                  ),
+                                  const Padding(padding: EdgeInsets.all(5)),
+                                  /* LinearPercentIndicator(
                                   animation: true,
                                   lineHeight: 20,
                                   percent: score / 100,
                                 )*/
+                                ],
+                              ),
+                              actions: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Get.back();
+                                          Get.back();
+                                          //   controller.BNB_index = 2;
+                                        },
+                                        child: const Text(
+                                          "OK",
+                                          style: TextStyle(color: Colors.blue),
+                                        ))
+                                  ],
+                                )
                               ],
                             ),
-                            actions: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  TextButton(
-                                      onPressed: () {
-                                        Get.back();
-                                        Get.back();
-                                        //   controller.BNB_index = 2;
-                                      },
-                                      child: const Text(
-                                        "OK",
-                                        style: TextStyle(color: Colors.blue),
-                                      ))
-                                ],
-                              )
-                            ],
-                          ),
-                        );
+                          );
 
-                        //Navigator.pop(context);
+                          //Navigator.pop(context);
+                        }
                       }
                     },
-                    child: Text(Question_checked == false
-                        ? "Check"
-                        : current_question != widget.questions_count
-                            ? "Next"
-                            : "Finish")),
-              ),
-              const Padding(padding: EdgeInsets.all(20)),
-              Container(
-                child: Text(answerState),
-              )
-            ],
+                    child: Row(children: [
+                      Container(
+                          width: MediaQuery.sizeOf(context).width * 0.9,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: button_color),
+                          child: Center(
+                              child: Text(
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white),
+                                  Question_checked == false
+                                      ? "Check"
+                                      : current_question !=
+                                              widget.questions_count
+                                          ? "Next"
+                                          : "Finish")))
+                    ]))
+              ],
+            ),
           ),
         ),
       ),
+      /*   bottomNavigationBar: Container(
+          color: Colors.orange,
+          child: MaterialButton(
+              onPressed: () async {
+                if (tst_form_key.currentState!.validate()) {
+                  if (Question_checked == false &&
+                      current_question - 1 < English_Vocabs.length) {
+                    setState(() {
+                      Question_checked = true;
+
+                      // check the answer
+                      if (ans_cont.text.trim() ==
+                          Arabic_Meanings[
+                                  test_starting_index + current_question - 1]
+                              .trim()) {
+                        setState(() {
+                          answerState = CorrectgAnswerMessage[
+                              Random().nextInt(CorrectgAnswerMessage.length)];
+                          answer_state_color = Colors.green;
+                          button_color = Colors.green;
+                          correct_answers++;
+                        });
+                      } else {
+                        setState(() {
+                          answerState = wrongAnswerMessage[
+                                  Random().nextInt(wrongAnswerMessage.length)] +
+                              Arabic_Meanings[
+                                  test_starting_index + current_question - 1];
+                          button_color = Colors.red;
+                          answer_state_color = Colors.red;
+                        });
+                      }
+                    });
+                  } else if (current_question != widget.questions_count) {
+                    setState(() {
+                      // next question
+                      Question_checked = false;
+                      current_question += 1;
+                      ans_cont.clear();
+                      answerState = "";
+
+                      answer_state_color = Colors.black;
+                      button_color = const Color.fromARGB(255, 58, 53, 53);
+                    });
+                  } else {
+                    // test finish button onpressed
+                    double score =
+                        (1.0 * correct_answers / widget.questions_count) * 100;
+                    // ****** add mark
+                    test_starting_index += widget.questions_count;
+                    if (test_starting_index >= English_Vocabs.length) {
+                      test_starting_index = 0;
+                      // shuffle now
+                      Shuffle_Vocabs_Lists();
+                    }
+                    Save_categ_starting_index(
+                      widget.test_category.categ_name,
+                    );
+                    var mark = Tst_Mark_Modl(
+                        score: score / 100,
+                        questions_cnt: widget.questions_count,
+                        Category_name: widget.test_category.categ_name);
+                    mark_cont.Add_test_mark_to_Controller(mark);
+                    // save mark
+                    Marks.add(mark);
+                    Save_Test_Mark_List();
+                    ///////////
+                    await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("Nice Try"),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              "You Scored",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Center(
+                              child: Text(
+                                "${score.toInt()}%",
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            ),
+                            const Padding(padding: EdgeInsets.all(5)),
+                            /* LinearPercentIndicator(
+                                  animation: true,
+                                  lineHeight: 20,
+                                  percent: score / 100,
+                                )*/
+                          ],
+                        ),
+                        actions: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                    Get.back();
+                                    Get.back();
+                                    //   controller.BNB_index = 2;
+                                  },
+                                  child: const Text(
+                                    "OK",
+                                    style: TextStyle(color: Colors.blue),
+                                  ))
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+
+                    //Navigator.pop(context);
+                  }
+                }
+              },
+              child: Row(children: [
+                Container(
+                    width: MediaQuery.sizeOf(context).width * 0.9,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: button_color),
+                    child: Center(
+                        child: Text(
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white),
+                            Question_checked == false
+                                ? "Check"
+                                : current_question != widget.questions_count
+                                    ? "Next"
+                                    : "Finish")))
+              ]))),*/
     );
   }
 }

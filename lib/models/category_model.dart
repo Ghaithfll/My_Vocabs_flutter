@@ -6,7 +6,7 @@ class CategoryModel {
   List<String> english = [];
   List<String> arabic = [];
   bool selected = false;
-  
+
   CategoryModel(
       {required this.categ_name, required this.arabic, required this.english});
 }
@@ -19,8 +19,8 @@ class Category_Type_Adapter extends TypeAdapter<CategoryModel> {
 
     return CategoryModel(
         categ_name: reader.readString(),
-        arabic: reader.readStringList(),
-        english: reader.readStringList());
+        english: reader.readStringList(),
+        arabic: reader.readStringList());
   }
 
   @override
@@ -32,9 +32,7 @@ class Category_Type_Adapter extends TypeAdapter<CategoryModel> {
   void write(BinaryWriter writer, CategoryModel obj) {
     // TODO: implement write
     writer.writeString(obj.categ_name);
+    writer.writeStringList(obj.english);
     writer.writeStringList(obj.arabic);
-
-    writer.writeStringList(obj
-        .english); // u write a list<String> , and read a List<String> (in the read method)
   }
 }

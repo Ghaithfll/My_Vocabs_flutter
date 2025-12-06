@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:my_vocabs/Custom_widgets/mark.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
 import 'package:get/get.dart';
+import 'package:my_vocabs/models/tst_mark_modL.dart';
+import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -19,24 +21,36 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     // TODO: implement initState
     // read marks
+    Read_Test_Mark_List();
+    marks_cont.Read_Marks_From_marks_List();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => marks_cont.marks.isEmpty
-          ? Center(
-              child: Container(
-              child: const Text("Your Test Results will Appear Here"),
-            ))
-          : ListView.builder(
-              itemCount: marks_cont.marks.length,
-              itemBuilder: (context, index) => Test_mark(
-                  mark: marks_cont.marks[index].score,
-                  questions_count: marks_cont.marks[index].questions_cnt,
-                  test_category: marks_cont.marks[index].Category),
-            ),
-    );
+    return Obx(() => marks_cont.marks.isEmpty
+        ? Center(
+            child: Container(
+            child: const Text("Your Test Results will Appear Here"),
+          ))
+        : WillPopScope(
+            onWillPop: () async {
+              if (marks_cont.marks_edit_mode.value == true) {
+                setState(() {
+                  marks_cont.Disable_Mark_Edit_Mode();
+                });
+                return false;
+              }
+              return true;
+            },
+            child: ListView.builder(
+                reverse: true,
+                shrinkWrap: true,
+                itemCount: marks_cont.marks.length,
+                itemBuilder: (context, index) {
+                  return Test_mark(
+                    mark: Marks[index],
+                  );
+                })));
   }
 }

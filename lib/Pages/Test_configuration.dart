@@ -33,6 +33,7 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
         child: const Text(
           "Choose Your Test Configurations",
           overflow: TextOverflow.clip,
+          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 20),
         ),
       ),

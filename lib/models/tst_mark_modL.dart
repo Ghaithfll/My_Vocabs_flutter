@@ -4,7 +4,7 @@ class Tst_Mark_Modl {
   int questions_cnt;
   double score;
   String Category_name;
-
+  bool selected = false;
   Tst_Mark_Modl(
       {required this.Category_name,
       required this.questions_cnt,
@@ -28,8 +28,8 @@ class Test_Mark_Type_Adapter extends TypeAdapter<Tst_Mark_Modl> {
   @override
   void write(BinaryWriter writer, Tst_Mark_Modl obj) {
     // TODO: implement write
-    writer.writeDouble(obj.score);
-    writer.writeInt(obj.questions_cnt);
     writer.writeString(obj.Category_name);
+    writer.writeInt(obj.questions_cnt);
+    writer.writeDouble(obj.score);
   }
 }

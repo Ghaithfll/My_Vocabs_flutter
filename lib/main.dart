@@ -20,6 +20,7 @@ Future<Box> OpenHiveBox(String box_name) async {
   return await Hive.openBox(box_name);
 }
 
+
 void main() async {
   // whenever u need to invoke a future method before the runApp, you need this line
   WidgetsFlutterBinding.ensureInitialized();

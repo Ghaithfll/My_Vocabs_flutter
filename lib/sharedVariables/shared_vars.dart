@@ -2,9 +2,13 @@ import 'package:get/get.dart';
 import 'package:my_vocabs/controllers/Categs_cont.dart';
 import 'package:my_vocabs/main.dart';
 import 'package:my_vocabs/models/category_model.dart';
+import 'package:my_vocabs/models/tst_mark_modL.dart';
 
 bool Categories_Select_Mode = false;
+//bool Delete_Vocabs_Mode = false;
 
+  List<String> vocab_backup = [];
+  List<String> meanings_backup = [];
 List<String> English_Vocabs = [
   "Awkward",
   "Chills",
@@ -44,14 +48,12 @@ List<String> Level_6 = ["stuck", "estimate", "eleminate"];
 List<String> Level_6_meanings = ["عالق", "تقدير", "ازالة"];*/
 int test_starting_index = 0; // store & retrieve
 
-/*  // these 2 lists are moved to the mark_Controller 
-List<String> My_vocabs = [];
-List<String> My_vocabs_meanings = [];*/
+List<Tst_Mark_Modl> Marks = [];
 
-void Save_Vocab_Lists(CategoryModel category) {
-  my_box!.put(category.categ_name, category.english);
+void Save_Vocab_Lists(CategoryModel category) async {
+  await my_box!.put(category.categ_name, category.english);
 
-  my_box!.put(category.categ_name + "_meanings", category.arabic);
+  await my_box!.put(category.categ_name + "_meanings", category.arabic);
   print("================= Vocabs Lists have been Saved Successfully");
   print(category.english);
 }
@@ -66,7 +68,7 @@ void Read_Vocab_Lists(CategoryModel category) {
 
 //************ initialize app saved lists(store them) */
 
-void Initialize_Application_First_Time() {
+void Initialize_Application_First_Time() async {
   // invoke this to store level 6 & level 7
   App_Used = my_box!.get("App_Used") ?? 0;
   if (App_Used == 0) {
@@ -74,7 +76,7 @@ void Initialize_Application_First_Time() {
       Save_Vocab_Lists(Categories[i]);
     }
     App_Used += 5;
-    my_box!.put("App_Used", App_Used);
+    await my_box!.put("App_Used", App_Used);
     print("################# App Initialized #############");
     // save Categories list
     Save_Categories_List();
@@ -82,28 +84,36 @@ void Initialize_Application_First_Time() {
 }
 
 void Read_Categories_List() {
-  Categories = (my_box!.get("Categories_List")).cast<CategoryModel>() ??
-      []; // casting from List<dynamic> => List<CategoryModel>
+  var data = my_box!.get("Categories_List");
+  Categories = (data as List?)?.cast<CategoryModel>() ?? [];
   print("##### Categories have been read successfully ");
 }
 
-void Save_Categories_List() {
-  my_box!.put("Categories_List", Categories);
+void Save_Categories_List() async {
+  await my_box!.put("Categories_List", Categories);
   print("##### Categories have been Saved successfully ");
 }
 
 final categ_cont = Get.put(Categories_Cont());
-void Delete_Category(CategoryModel categ) {
+void Delete_Category(CategoryModel categ) async {
   if (categ.categ_name != "My Vocabs") {
-      my_box!.delete(categ.categ_name);
-    my_box!.delete(
+    await my_box!.delete(categ.categ_name);
+    await my_box!.delete(
         categ.categ_name + "_meanings"); // delete the lists of the categ
-   
-     Categories.remove(categ);
+
+    Categories.remove(categ);
     categ_cont.Categories_List.remove(categ);
   }
   Save_Categories_List();
 }
 
-void Save_Test_Mark_List() {}
-void Read_Test_Mark_List() {}
+void Save_Test_Mark_List() async {
+  await my_box!.put("Test_Mark_List", Marks);
+  print("Marks have been Saved successfully");
+}
+
+void Read_Test_Mark_List() {
+  var data = my_box!.get("Test_Mark_List");
+  Marks = (data as List?)?.cast<Tst_Mark_Modl>() ?? [];
+  print("Marks have been Read successfully");
+}

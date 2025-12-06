@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:my_vocabs/Custom_widgets/Vocab.dart';
+import 'package:my_vocabs/Custom_widgets/bottom_del_vocab_bar.dart';
 import 'package:my_vocabs/Pages/Add_vocabs.dart';
 import 'package:my_vocabs/controllers/all_voc_cont.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
@@ -9,9 +10,8 @@ import 'package:my_vocabs/models/category_model.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 
 class All_Vocabs extends StatefulWidget {
-  All_Vocabs({super.key,  required this.category});
+  All_Vocabs({super.key, required this.category});
   CategoryModel category;
-
 
   @override
   State<All_Vocabs> createState() => _All_VocabsState();
@@ -37,16 +37,28 @@ class _All_VocabsState extends State<All_Vocabs> {
     vocabs = widget.category.english;
 
     meanings = widget.category.arabic;
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            widget.category.categ_name,
-            style: const TextStyle(),
+    return Obx(() => Scaffold(
+          appBar: AppBar(
+            title: Text(
+              widget.category.categ_name,
+              style: const TextStyle(),
+            ),
+            backgroundColor: Colors.blueGrey,
+            centerTitle: true,
           ),
-          backgroundColor: Colors.blueGrey,
-          centerTitle: true,
-        ),
-        body: Obx(() => Center(
+          body: WillPopScope(
+            onWillPop: () async {
+              if (all_voc_cont.Delete_Vocabs_Mode.value == true) {
+                setState(() {
+                  all_voc_cont.Disable_Delete_Voc_Mode();
+                  Cancel_Delete_Process(
+                      category: widget.category, all_voc: all_voc_cont);
+                });
+                return false;
+              }
+              return true;
+            },
+            child: Center(
               child: all_voc_cont.Vocabs
                       .isEmpty //since the obx content depends on this line, then this line should be reactive(Rx type to reflect the changes immediately)
                   ? const Text(
@@ -56,18 +68,35 @@ class _All_VocabsState extends State<All_Vocabs> {
                   : ListView.builder(
                       itemCount: all_voc_cont.Vocabs.length,
                       itemBuilder: (context, index) => Vocab(
-                          meaning: all_voc_cont.Meanings[index],
-                          word: all_voc_cont.Vocabs[index]),
+                        all_voc_controller: all_voc_cont,
+                        meaning: all_voc_cont.Meanings[index],
+                        word: all_voc_cont.Vocabs[index],
+                        categ: widget.category,
+                        index: index,
+                      ),
                     ),
-            )),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.to(() => Add_Vocabs_page(category: widget.category));
-          },
-          child: const Text(
-            "Add Vocabs",
-            style: TextStyle(fontSize: 12),
+            ),
           ),
+          bottomNavigationBar: all_voc_cont.Delete_Vocabs_Mode.value
+              ? Delete_Vocab_Bar(
+                  category: widget.category,
+                )
+              : Text(""),
+          floatingActionButton: all_voc_cont.Delete_Vocabs_Mode.value == false
+              ? FloatingActionButton(
+                  onPressed: () {
+                    Get.to(() => Add_Vocabs_page(
+                          category: widget.category,
+                          index: -1,
+                          all_voc_cont: all_voc_cont,
+                        ));
+                  },
+                  child: const Text(
+                    "Add Vocabs",
+                    style: TextStyle(fontSize: 12),
+                  ),
+                )
+              : Text(""),
         ));
   }
 }
