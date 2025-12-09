@@ -20,8 +20,8 @@ Future<Box> OpenHiveBox(String box_name) async {
   return await Hive.openBox(box_name);
 }
 
-
 void main() async {
+  print("\\");
   // whenever u need to invoke a future method before the runApp, you need this line
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -30,7 +30,9 @@ void main() async {
   Hive.registerAdapter(
       Test_Mark_Type_Adapter()); // lines registering the adapters should precede the openBox
   my_box = await OpenHiveBox("My_vocabs_box1");
+  
   Initialize_Application_First_Time();
+  
   runApp(const MyApp());
 }
 

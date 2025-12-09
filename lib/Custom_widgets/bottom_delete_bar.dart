@@ -18,6 +18,7 @@ class Bottom_Delete_Bar extends StatelessWidget {
         TextButton(
           onPressed: () async {
             await showDialog(
+              barrierDismissible: false, // tap outside the dialog wont close it
               context: context,
               builder: (context) => AlertDialog(
                 title: Text(
@@ -31,7 +32,7 @@ class Bottom_Delete_Bar extends StatelessWidget {
                       TextButton(
                           onPressed: () {
                             if (categs_cont.Categs_Select_Mode.value) {
-                              Delete_Selected_Categs();
+                              Delete_Selected_Categs(context);
                               categs_cont.Disable_Select_Mode();
                             } else if (marks_cont.marks_edit_mode.value) {
                               Delete_Selected_Marks();
@@ -48,6 +49,7 @@ class Bottom_Delete_Bar extends StatelessWidget {
                             marks_cont.Disable_Mark_Edit_Mode();
                             categs_cont.Disable_Select_Mode();
                             Navigator.pop(context);
+                            categs_cont.My_categs_selected = false;
                           },
                           child: Text(
                             "No",
@@ -57,7 +59,14 @@ class Bottom_Delete_Bar extends StatelessWidget {
                   )
                 ],
               ),
-            );
+            ); // after the dialog closes
+            print(categs_cont.My_categs_selected);
+            if (categs_cont.My_categs_selected) {
+              showDialog_Method(
+                  "Category 'My Vocabs' can't be deleted! Its The application name 🙂",
+                  context);
+              categs_cont.Get_Categ_By_Name("My Vocabs").selected = false;
+            }
           },
           child: Text(
             "Delete",
@@ -68,16 +77,24 @@ class Bottom_Delete_Bar extends StatelessWidget {
     );
   }
 
-  void Delete_Selected_Categs() {
+  void Delete_Selected_Categs(BuildContext context) async {
     List<CategoryModel> To_Delete = [];
+    bool my_vocabs_is_selected = false;
     for (var categ in categs_cont.Categories_List) {
       if (categ.selected && categ.categ_name != "My Vocabs") {
         To_Delete.add(categ);
+      } else if (categ.categ_name == "My Vocabs" && categ.selected) {
+        my_vocabs_is_selected = true;
       }
       //categs_cont.Initialize_Categories_Cont(Categories);
     }
+
     for (var categ in To_Delete) {
       Delete_Category(categ);
+    }
+
+    if (categs_cont.Get_Categ_By_Name("My Vocabs").selected) {
+      categs_cont.My_categs_selected = true;
     }
 
     print("${To_Delete.length} Categories have been deleted");
@@ -97,5 +114,38 @@ class Bottom_Delete_Bar extends StatelessWidget {
     Save_Test_Mark_List(); // now those marks were deleted
     //marks_cont.Read_Marks_From_marks_List(); supposed
     print("${To_Delete.length} Marks have been deleted");
+  }
+
+  void showDialog_Method(String content_text, BuildContext context) async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          "Message",
+          style: TextStyle(color: Colors.blue),
+        ),
+        icon: Icon(Icons.error_outline),
+        content: Text(
+          content_text,
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "OK",
+                    style: TextStyle(color: Colors.blue),
+                  )
+                ],
+              ))
+        ],
+      ),
+    );
   }
 }

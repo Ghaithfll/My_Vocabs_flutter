@@ -55,7 +55,7 @@ class _VocabState extends State<Vocab> {
             },
             child: Container(
                 // was sizedbox
-                color: Vocabs_Edit_mode ? Colors.amber : Colors.white,
+
                 width: MediaQuery.sizeOf(context).width * 0.8,
                 child: Obx(
                   () => Row(

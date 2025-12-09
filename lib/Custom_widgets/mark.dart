@@ -27,6 +27,7 @@ class _Test_markState extends State<Test_mark> {
     // TODO: implement initState
     super.initState();
     formated_mark = widget.mark.score * 100;
+   // date = widget.mark.date;
   }
 
   @override
@@ -98,28 +99,30 @@ class _Test_markState extends State<Test_mark> {
                               ))),
                     ],
                   ),
-                  Obx(() => Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: CircularPercentIndicator(
-                        radius: 30,
-                        progressColor: Colors.blue,
-                        animation: true,
-                        center: mark_cont.marks_edit_mode.value == false
-                            ? Text(
-                                "${formated_mark.toInt()}%",
-                                style: const TextStyle(fontSize: 12),
-                              )
-                            : Checkbox(
-                                value: mark_selected,
-                                onChanged: (value) {
-                                  setState(() {
-                                    mark_selected = value!;
-                                    widget.mark.selected = mark_selected;
-                                  });
-                                },
-                              ),
-                        percent: widget.mark.score,
-                      )))
+                  Obx(() => Container(
+                      width: MediaQuery.sizeOf(context).width * 0.23,
+                      child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: CircularPercentIndicator(
+                            radius: 30,
+                            progressColor: Colors.blue,
+                            animation: true,
+                            center: mark_cont.marks_edit_mode.value == false
+                                ? Text(
+                                    "${formated_mark.toInt()}%",
+                                    style: const TextStyle(fontSize: 12),
+                                  )
+                                : Checkbox(
+                                    value: mark_selected,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        mark_selected = value!;
+                                        widget.mark.selected = mark_selected;
+                                      });
+                                    },
+                                  ),
+                            percent: widget.mark.score,
+                          ))))
                 ],
               )),
         ));

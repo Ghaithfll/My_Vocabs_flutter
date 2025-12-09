@@ -31,6 +31,7 @@ class _Categories_PageState extends State<Categories_Page> {
               if (categs_cont.Categs_Select_Mode.value == true) {
                 setState(() {
                   categs_cont.Disable_Select_Mode();
+                  categs_cont.My_categs_selected = false;
                 });
                 return false;
               }

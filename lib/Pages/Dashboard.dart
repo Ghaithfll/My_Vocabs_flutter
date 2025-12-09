@@ -38,6 +38,7 @@ class _DashboardState extends State<Dashboard> {
               if (marks_cont.marks_edit_mode.value == true) {
                 setState(() {
                   marks_cont.Disable_Mark_Edit_Mode();
+                  
                 });
                 return false;
               }

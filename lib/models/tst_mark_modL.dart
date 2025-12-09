@@ -4,11 +4,14 @@ class Tst_Mark_Modl {
   int questions_cnt;
   double score;
   String Category_name;
+ // DateTime date;
   bool selected = false;
   Tst_Mark_Modl(
       {required this.Category_name,
       required this.questions_cnt,
-      required this.score});
+      required this.score,
+    //  required this.date
+      });
 }
 
 class Test_Mark_Type_Adapter extends TypeAdapter<Tst_Mark_Modl> {
@@ -18,7 +21,9 @@ class Test_Mark_Type_Adapter extends TypeAdapter<Tst_Mark_Modl> {
     return Tst_Mark_Modl(
         Category_name: reader.readString(),
         questions_cnt: reader.readInt(),
-        score: reader.readDouble());
+        score: reader.readDouble(),
+     //   date: DateTime.fromMicrosecondsSinceEpoch(reader.readInt())
+        );
   }
 
   @override
@@ -31,5 +36,6 @@ class Test_Mark_Type_Adapter extends TypeAdapter<Tst_Mark_Modl> {
     writer.writeString(obj.Category_name);
     writer.writeInt(obj.questions_cnt);
     writer.writeDouble(obj.score);
+   // writer.writeInt(obj.date.microsecondsSinceEpoch);
   }
 }

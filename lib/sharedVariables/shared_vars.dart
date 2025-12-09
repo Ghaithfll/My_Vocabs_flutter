@@ -7,8 +7,8 @@ import 'package:my_vocabs/models/tst_mark_modL.dart';
 bool Categories_Select_Mode = false;
 //bool Delete_Vocabs_Mode = false;
 
-  List<String> vocab_backup = [];
-  List<String> meanings_backup = [];
+List<String> vocab_backup = [];
+List<String> meanings_backup = [];
 List<String> English_Vocabs = [
   "Awkward",
   "Chills",
@@ -36,8 +36,51 @@ List<CategoryModel> Categories = [
       english: ["stuck", "estimate", "eleminate"]),
   CategoryModel(
       categ_name: "English Level 7", arabic: ["يجادل"], english: ["argue"]),
-  CategoryModel(categ_name: "English Level 8", arabic: [], english: []),
+  CategoryModel(
+      categ_name: "English Level 8",
+      arabic: level8_meaning,
+      english: level8_voc),
   CategoryModel(categ_name: "My Vocabs", arabic: [], english: [])
+];
+
+List<String> level8_voc = [
+  "Lethal",
+  "Proposal",
+  "Panacreatic cancer",
+  "Perseverance",
+  "Grand prize",
+  "Epidemic",
+  "Election",
+  "Assassination",
+  "Engineering fair",
+  "Prestigious award",
+  "Innovator",
+  "Contestant",
+  "Encourage",
+  "Participated",
+  "get along with",
+  "cut down on sweets",
+  "",
+];
+
+List<String> level8_meaning = [
+  "قاتل/مميت",
+  "عرض/اقتراح",
+  "سرطان البنكرياس",
+  "مثابرة",
+  "الجائزة الكبرى",
+  "وباء",
+  "انتخاب",
+  "اغتيال/قتل",
+  "معرض الهندسة",
+  "جائزة مرموقة",
+  "مبتكر",
+  "متسابق",
+  "يشجع",
+  "شارك",
+  "ينسجم مع",
+  "التقليل من الحلويات",
+  "",
 ];
 int App_Used = 0; // if 0 => new app, else the app is used
 /*
@@ -58,10 +101,11 @@ void Save_Vocab_Lists(CategoryModel category) async {
   print(category.english);
 }
 
-void Read_Vocab_Lists(CategoryModel category) {
-  category.english = (my_box!.get(category.categ_name) ?? []);
+void Read_Vocab_Lists(CategoryModel category) async {
+  category.english = await (my_box!.get(category.categ_name) ?? []);
 
-  category.arabic = (my_box!.get(category.categ_name + "_meanings") ?? []);
+  category.arabic =
+      await (my_box!.get(category.categ_name + "_meanings") ?? []);
   print("================= Vocabs Lists have been Read Successfully");
   print(category.english);
 }
@@ -83,8 +127,8 @@ void Initialize_Application_First_Time() async {
   }
 }
 
-void Read_Categories_List() {
-  var data = my_box!.get("Categories_List");
+void Read_Categories_List() async {
+  var data = await my_box!.get("Categories_List");
   Categories = (data as List?)?.cast<CategoryModel>() ?? [];
   print("##### Categories have been read successfully ");
 }
@@ -112,7 +156,11 @@ void Save_Test_Mark_List() async {
   print("Marks have been Saved successfully");
 }
 
-void Read_Test_Mark_List() {
+void Delete_Test_Mark_List() async {
+  my_box!.delete("Test_Mark_List");
+}
+
+void Read_Test_Mark_List() async {
   var data = my_box!.get("Test_Mark_List");
   Marks = (data as List?)?.cast<Tst_Mark_Modl>() ?? [];
   print("Marks have been Read successfully");

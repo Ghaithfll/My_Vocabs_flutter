@@ -10,9 +10,15 @@ class Marks_controller extends GetxController {
   void Enable_Mark_Edit_Mode() {
     marks_edit_mode.value = true;
   }
-  
+
   void Disable_Mark_Edit_Mode() {
     marks_edit_mode.value = false;
+
+    for (var mark in marks) {
+      if (mark.selected) {
+        mark.selected = false;
+      }
+    }
   }
 
   void Read_Marks_From_marks_List() {
