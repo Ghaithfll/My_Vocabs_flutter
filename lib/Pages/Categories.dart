@@ -17,6 +17,7 @@ class _Categories_PageState extends State<Categories_Page> {
   @override
   void initState() {
     // TODO: implement initState
+    
     Read_Categories_List();
     categs_cont.Initialize_Categories_Cont(Categories);
     super.initState();

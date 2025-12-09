@@ -123,7 +123,8 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
               Get.to(Test_Page(
                   test_category: chosen_categ,
                   questions_count:
-                      int.parse(questions_count_cont.text.toString())));
+                      int.parse(questions_count_cont.text.toString())),
+                      transition: Transition.leftToRight);
               questions_count_cont.clear();
             }
           },

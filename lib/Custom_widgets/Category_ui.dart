@@ -27,7 +27,7 @@ class _Category_UiState extends State<Category_Ui> {
         } else {
           Get.to(() => All_Vocabs(
                 category: widget.categ,
-              ));
+              ),transition: Transition.native);
         }
       }, // pop scope to end select mode
       onLongPress: () {

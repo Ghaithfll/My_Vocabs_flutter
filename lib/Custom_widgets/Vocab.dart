@@ -45,7 +45,7 @@ class _VocabState extends State<Vocab> {
                       vocab: Vocab_model(
                           meaning: widget.meaning, word: widget.word),
                       all_voc_cont: widget.all_voc_controller,
-                    ));
+                    ),transition: Transition.cupertino);
               }
             },
             onLongPress: () {

@@ -93,26 +93,26 @@ int test_starting_index = 0; // store & retrieve
 
 List<Tst_Mark_Modl> Marks = [];
 
-void Save_Vocab_Lists(CategoryModel category) async {
-  await my_box!.put(category.categ_name, category.english);
+void Save_Vocab_Lists(CategoryModel category)  {
+   my_box!.put(category.categ_name, category.english);
 
-  await my_box!.put(category.categ_name + "_meanings", category.arabic);
+   my_box!.put(category.categ_name + "_meanings", category.arabic);
   print("================= Vocabs Lists have been Saved Successfully");
   print(category.english);
 }
 
-void Read_Vocab_Lists(CategoryModel category) async {
-  category.english = await (my_box!.get(category.categ_name) ?? []);
+void Read_Vocab_Lists(CategoryModel category)  {
+  category.english =  (my_box!.get(category.categ_name) ?? []);
 
   category.arabic =
-      await (my_box!.get(category.categ_name + "_meanings") ?? []);
+       (my_box!.get(category.categ_name + "_meanings") ?? []);
   print("================= Vocabs Lists have been Read Successfully");
   print(category.english);
 }
 
 //************ initialize app saved lists(store them) */
 
-void Initialize_Application_First_Time() async {
+void Initialize_Application_First_Time() {
   // invoke this to store level 6 & level 7
   App_Used = my_box!.get("App_Used") ?? 0;
   if (App_Used == 0) {
@@ -120,21 +120,26 @@ void Initialize_Application_First_Time() async {
       Save_Vocab_Lists(Categories[i]);
     }
     App_Used += 5;
-    await my_box!.put("App_Used", App_Used);
+    my_box!.put("App_Used", App_Used);
     print("################# App Initialized #############");
     // save Categories list
     Save_Categories_List();
   }
 }
 
-void Read_Categories_List() async {
-  var data = await my_box!.get("Categories_List");
-  Categories = (data as List?)?.cast<CategoryModel>() ?? [];
-  print("##### Categories have been read successfully ");
+void Read_Categories_List()  {
+  App_Used =  my_box!.get("App_Used") ?? 0;
+  print(App_Used);
+  if (App_Used != 0) {
+    var data =  my_box!.get("Categories_List");
+    Categories = (data as List?)?.cast<CategoryModel>() ?? [];
+    print("##### Categories have been read successfully ");
+  }
+  print(App_Used);
 }
 
-void Save_Categories_List() async {
-  await my_box!.put("Categories_List", Categories);
+void Save_Categories_List() {
+  my_box!.put("Categories_List", Categories);
   print("##### Categories have been Saved successfully ");
 }
 
@@ -151,17 +156,22 @@ void Delete_Category(CategoryModel categ) async {
   Save_Categories_List();
 }
 
-void Save_Test_Mark_List() async {
-  await my_box!.put("Test_Mark_List", Marks);
+void Save_Test_Mark_List()  {
+   my_box!.put("Test_Mark_List", Marks);
   print("Marks have been Saved successfully");
 }
 
-void Delete_Test_Mark_List() async {
+void Delete_Test_Mark_List()  {
   my_box!.delete("Test_Mark_List");
 }
 
-void Read_Test_Mark_List() async {
+void Read_Test_Mark_List()  {
   var data = my_box!.get("Test_Mark_List");
   Marks = (data as List?)?.cast<Tst_Mark_Modl>() ?? [];
   print("Marks have been Read successfully");
+}
+
+class Dont_read_every_time {
+  bool categories_read = false;
+  bool marks_read = false;
 }
