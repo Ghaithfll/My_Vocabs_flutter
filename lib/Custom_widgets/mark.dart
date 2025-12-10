@@ -27,7 +27,7 @@ class _Test_markState extends State<Test_mark> {
     // TODO: implement initState
     super.initState();
     formated_mark = widget.mark.score * 100;
-   // date = widget.mark.date;
+    date = widget.mark.date;
   }
 
   @override

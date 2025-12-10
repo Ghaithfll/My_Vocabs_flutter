@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:my_vocabs/Pages/Test.dart';
 import 'package:my_vocabs/controllers/marks_cont.dart';
 import 'package:my_vocabs/main.dart';
+import 'package:my_vocabs/models/category_model.dart';
 import 'package:my_vocabs/sharedVariables/shared_vars.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -20,7 +21,9 @@ class Test_Configuration_Form extends StatefulWidget {
 
 class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
   final formkey = GlobalKey<FormState>();
-  var chosen_categ = Categories[0];
+  var chosen_categ = Categories.length != 0
+      ? Categories[Random().nextInt(Categories.length)]
+      : CategoryModel(categ_name: "Undefined", arabic: [], english: []);
   final my_voc_cont = Get.put(Marks_controller());
 
   TextEditingController questions_count_cont = TextEditingController();
@@ -110,8 +113,7 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
 
             //////////////////////// assign the chosen List to the
             ///       test list (English_vocabs & Arabic_meanings)
-  
-  
+
             English_Vocabs = chosen_categ.english;
             Arabic_Meanings = chosen_categ.arabic;
 
@@ -120,11 +122,12 @@ class _Test_Configuration_FormState extends State<Test_Configuration_Form> {
               //chosen_categ = Categories[0];
 
               // this souldnt be called everytime
-              Get.to(Test_Page(
-                  test_category: chosen_categ,
-                  questions_count:
-                      int.parse(questions_count_cont.text.toString())),
-                      transition: Transition.leftToRight);
+              Get.to(
+                  Test_Page(
+                      test_category: chosen_categ,
+                      questions_count:
+                          int.parse(questions_count_cont.text.toString())),
+                  transition: Transition.leftToRight);
               questions_count_cont.clear();
             }
           },

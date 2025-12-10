@@ -31,7 +31,7 @@ void main() async {
       Test_Mark_Type_Adapter()); // lines registering the adapters should precede the openBox
   my_box = await OpenHiveBox("My_vocabs_box1");
   
-  Initialize_Application_First_Time();
+  await Initialize_Application_First_Time(); // the await keword PAUSES the execution until the method is done
   
   runApp(const MyApp());
 }

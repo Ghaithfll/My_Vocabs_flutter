@@ -93,26 +93,25 @@ int test_starting_index = 0; // store & retrieve
 
 List<Tst_Mark_Modl> Marks = [];
 
-void Save_Vocab_Lists(CategoryModel category)  {
-   my_box!.put(category.categ_name, category.english);
+void Save_Vocab_Lists(CategoryModel category) {
+  my_box!.put(category.categ_name, category.english);
 
-   my_box!.put(category.categ_name + "_meanings", category.arabic);
+  my_box!.put(category.categ_name + "_meanings", category.arabic);
   print("================= Vocabs Lists have been Saved Successfully");
   print(category.english);
 }
 
-void Read_Vocab_Lists(CategoryModel category)  {
-  category.english =  (my_box!.get(category.categ_name) ?? []);
+void Read_Vocab_Lists(CategoryModel category) {
+  category.english = (my_box!.get(category.categ_name) ?? []);
 
-  category.arabic =
-       (my_box!.get(category.categ_name + "_meanings") ?? []);
+  category.arabic = (my_box!.get(category.categ_name + "_meanings") ?? []);
   print("================= Vocabs Lists have been Read Successfully");
   print(category.english);
 }
 
 //************ initialize app saved lists(store them) */
 
-void Initialize_Application_First_Time() {
+int Initialize_Application_First_Time() {
   // invoke this to store level 6 & level 7
   App_Used = my_box!.get("App_Used") ?? 0;
   if (App_Used == 0) {
@@ -124,17 +123,24 @@ void Initialize_Application_First_Time() {
     print("################# App Initialized #############");
     // save Categories list
     Save_Categories_List();
+    is_categories_read = true;
+    return 1;
   }
+  print("Initialize App finished");
+  return 0;
 }
 
-void Read_Categories_List()  {
-  App_Used =  my_box!.get("App_Used") ?? 0;
-  print(App_Used);
+bool is_marks_read = false;
+bool is_categories_read = false;
+void Read_Categories_List() {
+  App_Used = my_box!.get("App_Used") ?? 0;
+  //print(App_Used);
   if (App_Used != 0) {
-    var data =  my_box!.get("Categories_List");
+    var data = my_box!.get("Categories_List");
     Categories = (data as List?)?.cast<CategoryModel>() ?? [];
-    print("##### Categories have been read successfully ");
+    //   print("##### Categories have been read successfully ");
   }
+  is_categories_read = true;
   print(App_Used);
 }
 
@@ -156,18 +162,19 @@ void Delete_Category(CategoryModel categ) async {
   Save_Categories_List();
 }
 
-void Save_Test_Mark_List()  {
-   my_box!.put("Test_Mark_List", Marks);
+void Save_Test_Mark_List() {
+  my_box!.put("Test_Mark_List", Marks);
   print("Marks have been Saved successfully");
 }
 
-void Delete_Test_Mark_List()  {
+void Delete_Test_Mark_List() {
   my_box!.delete("Test_Mark_List");
 }
 
-void Read_Test_Mark_List()  {
+void Read_Test_Mark_List() {
   var data = my_box!.get("Test_Mark_List");
   Marks = (data as List?)?.cast<Tst_Mark_Modl>() ?? [];
+  is_marks_read = true;
   print("Marks have been Read successfully");
 }
 

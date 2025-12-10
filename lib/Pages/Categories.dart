@@ -17,9 +17,11 @@ class _Categories_PageState extends State<Categories_Page> {
   @override
   void initState() {
     // TODO: implement initState
-    
+    if (is_categories_read == false) {
     Read_Categories_List();
     categs_cont.Initialize_Categories_Cont(Categories);
+      
+    }
     super.initState();
   }
 

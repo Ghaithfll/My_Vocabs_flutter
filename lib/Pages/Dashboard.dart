@@ -21,8 +21,10 @@ class _DashboardState extends State<Dashboard> {
   void initState() {
     // TODO: implement initState
     // read marks
-    Read_Test_Mark_List();
-    marks_cont.Read_Marks_From_marks_List();
+    if (is_marks_read == false) {
+      Read_Test_Mark_List();
+      marks_cont.Read_Marks_From_marks_List();
+    }
     super.initState();
   }
 
@@ -38,7 +40,6 @@ class _DashboardState extends State<Dashboard> {
               if (marks_cont.marks_edit_mode.value == true) {
                 setState(() {
                   marks_cont.Disable_Mark_Edit_Mode();
-                  
                 });
                 return false;
               }
